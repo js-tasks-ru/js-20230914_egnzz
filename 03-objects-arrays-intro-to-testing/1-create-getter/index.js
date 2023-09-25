@@ -19,6 +19,7 @@ export function createGetter(path) {
     if(i < arr.length) {
       if(tmpObj) getValue(tmpObj);
     }
+    i = 0;
   }  
 
 }
