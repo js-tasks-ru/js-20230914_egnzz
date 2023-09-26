@@ -7,22 +7,19 @@
 export function trimSymbols(string, size) {
   let delStr = '';
   let repeatStr = '';
-  const singleLetter = [];
-  
-   if(size === 0) return '';
-  
-   if(size === 1) { 
-     string.split("").forEach((item, n, arr) => {
-       if(item != arr[n+1]) singleLetter.push(item);
-     });
-     return singleLetter.join("");
-   }
-  
-   for(let i = 0; i < string.length; i++) {
+  if(size === 0) return '';
+  if(typeof size === "undefined") return string;
+
+   let i = 0;
+   while(i < string.length) {
      repeatStr = string[i].repeat(size);
      delStr = string[i].repeat(size + 1);
-     string = string.replaceAll(delStr, repeatStr);
+     if(string.indexOf(delStr) >= 0) {
+       string = string.replace(delStr, repeatStr);  
+       i = string.indexOf(delStr);
+      }
+      i++;
      }
-   return string;
-  
+    return string;
+
 }
