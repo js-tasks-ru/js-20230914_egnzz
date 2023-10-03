@@ -10,14 +10,14 @@ export function createGetter(path) {
 
   return function(obj) {
     getValue(obj);
-    return(tmpObj);
-  } 
+    return (tmpObj);
+  }; 
 
   function getValue(obj) {
     tmpObj = obj[arr[i]];
     i++;
-    if(i < arr.length) {
-      if(tmpObj) getValue(tmpObj);
+    if (i < arr.length) {
+      if (tmpObj) {getValue(tmpObj);}
     }
     i = 0;
   }  
