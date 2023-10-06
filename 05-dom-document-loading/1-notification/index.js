@@ -1,21 +1,28 @@
 export default class NotificationMessage {
-    static lastInstanse;
-    constructor(message,  props = {} ) {
-        const {
-            duration = 2000,
-            type = 'success',
-        } = props;
+  static lastInstanse;
 
-        this.duration = duration,
-        this.type = type,
-        this.message = message,
+  constructor(message, props = {}) {
+    const {
+      duration = 2000,
+      type = 'success',
+    } = props;
 
-    this.element = document.createElement("div");
-    this.element.textContent = this.message;
-    this.element.classList.add(this.type);
-    }
+    this.duration = duration;
+    this.type = type;
+    this.message = message;
 
-    createTemplateElement(element) {
+    this.element = this.createElement(this.createTemplate());
+  }
+
+  createElement(template) {
+    const element = document.createElement("div");
+
+    element.innerHTML = template;
+
+    return element.firstElementChild;
+  }
+
+  createTemplate() {
     return `
     <div class="notification ${this.type}" style="--value:20s;">
      <div class="timer"></div>
@@ -26,34 +33,31 @@ export default class NotificationMessage {
       </div>
      </div>
     </div>`;
-}
+  }
 
-    show(elem) {
-	   document.body.append(this.element);
-     this.element.innerHTML = this.createTemplateElement(this.element);
+  show(container = document.body) {
+    if (NotificationMessage.lastInstanse) {
+      NotificationMessage.lastInstanse.destroy();
+    }
 
-     if(NotificationMessage.lastInstanse) {
-        this.destroy();
-     }
+    NotificationMessage.lastInstanse = this;
 
-     NotificationMessage.lastInstanse = this.element;
+    container.append(this.element);
 
-	 this.timer = setTimeout(() => {
-	 this.destroy();
-	},
-	this.duration
-	);
- }
+    this.timeoutId = setTimeout(() => {
+      this.destroy();
+    }, this.duration);
+  }
 
- remove() {
+  remove() {
     this.element.remove();
   }
 
   destroy() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    };
-    this.timer = null;
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    this.timeoutId = null;
     this.remove();
   }
 
