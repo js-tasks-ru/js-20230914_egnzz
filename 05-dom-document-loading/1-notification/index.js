@@ -1,4 +1,5 @@
 export default class NotificationMessage {
+    static lastInstanse;
     constructor(message,  props = {} ) {
         const {
             duration = 2000,
@@ -28,9 +29,14 @@ export default class NotificationMessage {
 }
 
     show(elem) {
-    if(elem) this.element = elem;
-	document.body.append(this.element);
+	   document.body.append(this.element);
      this.element.innerHTML = this.createTemplateElement(this.element);
+
+     if(NotificationMessage.lastInstanse) {
+        this.destroy();
+     }
+
+     NotificationMessage.lastInstanse = this.element;
 
 	 this.timer = setTimeout(() => {
 	 this.destroy();
@@ -44,6 +50,9 @@ export default class NotificationMessage {
   }
 
   destroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    };
     this.timer = null;
     this.remove();
   }
