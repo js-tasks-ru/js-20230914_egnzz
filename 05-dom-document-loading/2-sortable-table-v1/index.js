@@ -7,7 +7,8 @@ export default class SortableTable {
     this.element = this.createElement(this.createTemplate());
     
     this.subElements = {
-      body: this.element.querySelector('[data-element="body"]')
+      body: this.element.querySelector('[data-element="body"]'),
+      header: this.element.querySelector('[data-element="header"]')
     };
   }
 
