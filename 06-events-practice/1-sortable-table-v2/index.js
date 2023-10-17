@@ -16,20 +16,17 @@ export default class SortableTable extends SortableTable_v1
   }
 
   headerClickEvent() {
-  this.columnHeaderElement = this.element.querySelector(".sortable-table__header");
-  this.columnHeaderElement.addEventListener("click", (evt) => {
+    this.subElements.header.addEventListener("click", (evt) => {
 
-  this.headerArrowElement =  this.element.querySelector(".sortable-table__sort-arrow");
-  this.headerFieldValue = evt.target.closest(".sortable-table__cell").append(this.headerArrowElement);    
+      this.headerArrowElement = this.element.querySelector(".sortable-table__sort-arrow");
+      this.headerFieldValue = evt.target.closest(".sortable-table__cell").append(this.headerArrowElement);    
   
-  this.headerFieldValue = evt.target.closest(".sortable-table__cell").dataset.id;
+      this.headerFieldValue = evt.target.closest(".sortable-table__cell").dataset.id;
 
-  super.sort(this.headerFieldValue, this.sorted.order);
+      (this.sorted.order === 'asc') ? this.sorted.order = 'desc' : this.sorted.order = 'asc';
 
+      super.sort(this.headerFieldValue, this.sorted.order);
 
-  });
-  
- }
-
+    });
+  }
 }
-

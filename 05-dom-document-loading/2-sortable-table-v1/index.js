@@ -4,7 +4,7 @@ export default class SortableTable {
     this.headerConfig = headerConfig;
     this.data = data;
 
-    this.element = this.createElement(this.createTemplate());
+    this.element = this.createElement(this.createBodyTemplate());
     
     this.subElements = {
       body: this.element.querySelector('[data-element="body"]'),
@@ -15,30 +15,38 @@ export default class SortableTable {
   createElement(template) {
     const element = document.createElement("div");
     
-    element.innerHTML = template;
-
-    return element.firstElementChild;
-  }
-
-  createTemplate() {
-    return `
+    element.innerHTML = `
       <div data-element="productsContainer" class="products-list__container">
         <div class="sortable-table">
-          <div data-element="header" class="sortable-table__header sortable-table__row">
-            ${this.createHeaderTableTemplate()}
-          </div>
-          <div data-element="body" class="sortable-table__body">
-            ${this.createBodyTableTemplate()}
-          </div>
-          <div data-element="loading" class="loading-line sortable-table__loading-line"></div>
-          <div data-element="emptyPlaceholder" class="sortable-table__empty-placeholder">
-            <div>
-              <p>No products satisfies your filter criteria</p>
-              <button type="button" class="button-primary-outline">Reset all filters</button>
-            </div>
+	    ${this.createHeaderTemplate()}
+	    ${template}
+        </div>
+      </div>
+  	`;
+    return element.firstElementChild;
+  }
+  
+  createHeaderTemplate() {
+    return `
+	    <div data-element="header" class="sortable-table__header sortable-table__row">
+         ${this.createHeaderTableTemplate()}
+        </div>
+	  `;
+  }
+
+  createBodyTemplate() {
+    return ` 
+      <div data-element="body" class="sortable-table__body">
+       ${this.createBodyTableTemplate()}
+      </div>
+      <div data-element="loading" class="loading-line sortable-table__loading-line"></div>
+        <div data-element="emptyPlaceholder" class="sortable-table__empty-placeholder">
+          <div>
+           <p>No products satisfies your filter criteria</p>
+           <button type="button" class="button-primary-outline">Reset all filters</button>
           </div>
         </div>
-      </div>`;
+    `;
   }
 
   createArrowTemplate() {
@@ -99,8 +107,7 @@ export default class SortableTable {
       }
   
       this.data = this.sortedData;
-      this.element.innerHTML = this.createTemplate();
-  
+      this.subElements.body.innerHTML = this.createBodyTemplate();
     }
 
     this.update(this.sortedData);
