@@ -16,7 +16,7 @@ export default class SortableTable extends SortableTable_v1
   }
 
   headerClickEvent() {
-    this.subElements.header.addEventListener("click", (evt) => {
+    this.subElements.header.addEventListener("pointerdown", (evt) => {
 
       this.headerArrowElement = this.element.querySelector(".sortable-table__sort-arrow");
       this.headerFieldValue = evt.target.closest(".sortable-table__cell").append(this.headerArrowElement);    
