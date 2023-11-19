@@ -46,7 +46,7 @@ export default class ColumnChart {
         </div> 
         <div class="column-chart__container">
           <div class="column-chart__header" data-element="header">${this.value}</div>
-          <div class="column-chart__chart ${this.data ? 'column-chart_loading' : ''}" data-element="body">
+          <div class="column-chart__chart${this.data ? ' column-chart_loading' : ''}" data-element="body">
             ${this.createColumnChartBodyTemplate()}
           </div>
         </div>
