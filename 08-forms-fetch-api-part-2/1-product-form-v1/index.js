@@ -1,5 +1,5 @@
 import fetchJson from './utils/fetch-json.js';
-import safeString from './utils/escape-html.js';
+import escapeHtml from './utils/escape-html.js';
 
 const IMGUR_CLIENT_ID = '28aaa2e823b03b1';
 const BACKEND_URL = 'https://course-js.javascript.ru';
@@ -41,8 +41,8 @@ export default class ProductForm {
       this.formToSend = {};
 
       this.formToSend.id = this.productId;
-      this.formToSend.title = safeString(this.form.get("title"));
-      this.formToSend.description = safeString(this.form.get("description"));
+      this.formToSend.title = this.form.get("title");
+      this.formToSend.description = this.form.get("description");
       this.formToSend.quantity = Number(this.form.get("quantity"));
       this.formToSend.subcategory = this.form.get("subcategory");
       this.formToSend.status = Number(this.form.get("status"));
@@ -151,7 +151,7 @@ save() {
     <input type="hidden" name="source" value="75462242_3746019958756848_838491213769211904_n.jpg">
     <span>
     <img src="${BACKEND_URL}/assets/icons/icon-grab.svg" data-grab-handle="" alt="grab">
-    <img class="sortable-table__cell-img" alt="Image" src="${this.productData[0].images[0].url}">
+    <img class="sortable-table__cell-img" alt="Image" src="${escapeHtml(this.productData[0].images[0].url)}">
     <span>75462242_3746019958756848_838491213769211904_n.jpg</span>
     </span>
     <button type="button">
