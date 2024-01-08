@@ -13,7 +13,7 @@ export default class ProductForm {
 
   async render () {
 
-    if(this.productId) {
+    if (this.productId) {
       this.category = await fetchJson(`${BACKEND_URL}/api/rest/categories?_refs=subcategory`);
       this.productData = await fetchJson(`${BACKEND_URL}/api/rest/products?id=${this.productId}`);
       this.element = this.createElement(this.createBodyTemplate());
@@ -26,11 +26,11 @@ export default class ProductForm {
       this.element.querySelector("#price").value = this.productData[0].price;
       this.element.querySelector("#discount").value =	this.productData[0].discount;
     }
-       else {
-        this.element = this.createElement(this.createBodyTemplate());
-       }
+    else {
+      this.element = this.createElement(this.createBodyTemplate());
+    }
 
-       this.subElements = {
+    this.subElements = {
       productForm: this.element.querySelector('[data-element="productForm"]'),
       imageListContainer: this.element.querySelector('[data-element="imageListContainer"]')
     };
@@ -55,24 +55,24 @@ export default class ProductForm {
       this.formToSend.images = [];
 
       this.response = await fetchJson(
-       `${BACKEND_URL}/api/rest/products`,
-       {
-         method: 'POST',
-        body: JSON.stringify(this.formToSend)
-       }
-     );
-    this.result = await this.response.json(response);
-    this.save();
-  })
+        `${BACKEND_URL}/api/rest/products`,
+        {
+          method: 'POST',
+          body: JSON.stringify(this.formToSend)
+        }
+      );
+      this.result = await this.response.json(response);
+      this.save();
+    });
 
-return this.element;
-}
+    return this.element;
+  }
 
-save() {
-  this.productId ?
-   this.element.dispatchEvent(new CustomEvent("product-updated", { bubbles: true, detail:"product-updated" })) :
-   this.element.dispatchEvent(new CustomEvent("product-saved", { bubbles: true, detail:"product-saved" }))
-}
+  save() {
+    this.productId ?
+      this.element.dispatchEvent(new CustomEvent("product-updated", { bubbles: true, detail: "product-updated" })) :
+      this.element.dispatchEvent(new CustomEvent("product-saved", { bubbles: true, detail: "product-saved" }));
+  }
 
   createElement(template) {
     const element = document.createElement("div");
@@ -140,8 +140,8 @@ save() {
 
   createSelectItems() {
     return this.category.map(item => {
-      return item.subcategories.map(subitem => { return`<option value=${item.id}>${item.title} > ${subitem.title}</option>`}).join('');
-   }).join('');
+      return item.subcategories.map(subitem => { return `<option value=${item.id}>${item.title} > ${subitem.title}</option>`;}).join('');
+    }).join('');
   }
 
   createImagesTemplate() {
