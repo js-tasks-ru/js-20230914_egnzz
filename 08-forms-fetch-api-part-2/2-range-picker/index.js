@@ -135,7 +135,7 @@ export default class RangePicker {
       <div class="rangepicker__selector-control-right"></div>
       <div class="rangepicker__calendar">
         <div class="rangepicker__month-indicator">
-          <time datetime="${this.date.from.toLocaleString('default', {month: 'long'})}">${this.date.from.toLocaleString('default', {month: 'long'})}</time>
+          <time datetime="${this.date.from.toLocaleString('ru-RU', {month: 'long'})}">${this.date.from.toLocaleString('ru-RU', {month: 'long'})}</time>
         </div>
       ${this.createHeaderDayOfWeek()}
         <div class="rangepicker__date-grid">
@@ -144,7 +144,7 @@ export default class RangePicker {
       </div>
       <div class="rangepicker__calendar">
         <div class="rangepicker__month-indicator">
-          <time datetime="${this.date.to.toLocaleString('default', { month: 'long' })}">${this.date.to.toLocaleString('default', { month: 'long' })}</time>
+          <time datetime="${this.date.to.toLocaleString('ru-RU', { month: 'long' })}">${this.date.to.toLocaleString('ru-RU', { month: 'long' })}</time>
         </div>
         ${this.createHeaderDayOfWeek()}
         <div class="rangepicker__date-grid">
@@ -175,10 +175,10 @@ export default class RangePicker {
 
     const [leftTime, rightTime] = this.subElements.selector.querySelectorAll('time');
     leftTime.outerHTML = `
-      <time datetime="${this.date.from.toLocaleString('default', {month: 'long'})}">${this.date.from.toLocaleString('default', {month: 'long'})}</time>
+      <time datetime="${this.date.from.toLocaleString('ru-RU', {month: 'long'})}">${this.date.from.toLocaleString('ru-RU', {month: 'long'})}</time>
       `;
     rightTime.outerHTML = `
-      <time datetime="${this.date.to.toLocaleString('default', {month: 'long'})}">${this.date.to.toLocaleString('default', {month: 'long'})}</time>
+      <time datetime="${this.date.to.toLocaleString('ru-RU', {month: 'long'})}">${this.date.to.toLocaleString('ru-RU', {month: 'long'})}</time>
       `;
   }
 
