@@ -39,13 +39,9 @@ export default class RangePicker {
         }
         else {
           this.daySelection.stop = Date.parse(evt.target.dataset.value) - millisecondsToDay;
-          this.date.from = new Date(this.daySelection.start);
-          this.date.to = new Date(this.daySelection.stop);
-          this.subElements.input.innerHTML = this.createInputBodyTemplate();
+          this.subElements.input.innerHTML = this.createInputBodyTimestampTemplate();
           this.subElements.selector.innerHTML = this.createSelectorTemplate();
-
           this.subElements.input.dispatchEvent(new MouseEvent("click", { bubles: true }));
-
         }
       }
 
@@ -89,9 +85,28 @@ export default class RangePicker {
 
   createInputBodyTemplate() {
     return `
-        <span data-element="from">${this.date.from.toLocaleDateString()}</span> -
-        <span data-element="to">${this.date.to.toLocaleDateString()}</span>
+        <span data-element="from">${this.date.from.toLocaleDateString('ru-RU')}</span> -
+        <span data-element="to">${this.date.to.toLocaleDateString('ru-RU')}</span>
         `;
+  }
+
+  createInputBodyTimestampTemplate() {
+    return `
+      <span data-element="from">${new Date(this.daySelection.start).toLocaleString("ru-RU",
+        {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric'
+        }
+      )}</span> -
+      <span data-element="to">${ new Date(this.daySelection.stop).toLocaleString("ru-RU",
+        {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric'
+        }
+      )}</span>
+      `;
   }
 
   createButtonsTemplate(fromto) {
