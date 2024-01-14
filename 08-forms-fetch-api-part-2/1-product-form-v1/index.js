@@ -12,19 +12,10 @@ export default class ProductForm {
   }
 
   async render () {
-
     if (this.productId) {
       this.category = await fetchJson(`${BACKEND_URL}/api/rest/categories?_refs=subcategory`);
       this.productData = await fetchJson(`${BACKEND_URL}/api/rest/products?id=${this.productId}`);
       this.element = this.createElement(this.createBodyTemplate());
-
-      this.element.querySelector("#title").value = this.productData[0].title;
-      this.element.querySelector("#description").value = this.productData[0].description;
-      this.element.querySelector("#quantity").value = this.productData[0].quantity;
-      this.element.querySelector("#subcategory").value = this.productData[0].subcategory;
-      this.element.querySelector("#status").value = this.productData[0].status;
-      this.element.querySelector("#price").value = this.productData[0].price;
-      this.element.querySelector("#discount").value =	this.productData[0].discount;
     }
     else {
       this.element = this.createElement(this.createBodyTemplate());
@@ -32,8 +23,15 @@ export default class ProductForm {
 
     this.subElements = {
       productForm: this.element.querySelector('[data-element="productForm"]'),
-      imageListContainer: this.element.querySelector('[data-element="imageListContainer"]')
+      imageListContainer: this.element.querySelector('[data-element="imageListContainer"]'),
+      inputFields: this.element.querySelectorAll('[id]')
     };
+
+    if (this.productId) {
+      for (let prop of this.subElements.inputFields) {
+        prop.value = this.productData[0][prop.id];
+      }
+    }
 
     this.element.addEventListener("submit", async (evt) => {
       evt.preventDefault();

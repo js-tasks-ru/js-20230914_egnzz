@@ -10,56 +10,64 @@ export default class RangePicker {
       start: Date.parse(this.date.from),
       stop: Date.parse(this.date.to)
     };
+
+    this.eventListeners();
+
+  }
+
+  eventListeners() {
+    this.subElements.input.addEventListener("click", this.inputEventListener);
+    this.subElements.selector.addEventListener("click", this.selectorEventListener);
+  }
+
+  inputEventListener = (evt) => {
+    let rangepicker = evt.target.closest(".rangepicker");
+    if (rangepicker.className.includes('rangepicker_open')) {
+      rangepicker.classList.remove("rangepicker_open");
+    }
+    else {
+      this.subElements.selector.innerHTML = this.createSelectorTemplate();
+      rangepicker.classList.add("rangepicker_open");
+    }
+  }
+
+  selectorEventListener = (evt) => {
     const millisecondsToDay = 24 * 60 * 60 * 1000;
-    this.subElements.input.addEventListener("click", (evt) => {
-      let rangepicker = evt.target.closest(".rangepicker");
-      if (rangepicker.className.includes('rangepicker_open')) {
-        rangepicker.classList.remove("rangepicker_open");
+    if (evt.target.tagName === "BUTTON") {
+
+      let buttons = this.subElements.selector.querySelectorAll(".rangepicker__cell");
+      if (this.daySelection.stop != null) {
+        for (let prop of buttons) {
+          prop.classList.remove("rangepicker__selected-from");
+          prop.classList.remove("rangepicker__selected-between");
+          prop.classList.remove("rangepicker__selected-to");
+        }
+
+        evt.target.classList.add("rangepicker__selected-from");
+        this.daySelection.start = Date.parse(evt.target.dataset.value) - millisecondsToDay;
+        this.daySelection.stop = null;
       }
       else {
+        this.daySelection.stop = Date.parse(evt.target.dataset.value) - millisecondsToDay;
+        this.subElements.input.innerHTML = this.createInputBodyTimestampTemplate();
         this.subElements.selector.innerHTML = this.createSelectorTemplate();
-        rangepicker.classList.add("rangepicker_open");
+        this.subElements.input.dispatchEvent(new MouseEvent("click", { bubles: true }));
       }
-    });
+    }
 
-    this.subElements.selector.addEventListener("click", (evt) => {
-      if (evt.target.tagName === "BUTTON") {
+    if (evt.target.className.includes("rangepicker__selector-control-left")) {
+      this.date.from = new Date(this.date.from.setMonth(this.date.from.getMonth() - 1));
+      this.date.to = new Date(this.date.to.setMonth(this.date.to.getMonth() - 1));
+      this.subElements.input.innerHTML = this.createInputBodyTemplate();
+      this.changeSelectorTemplate();
+    }
 
-        let buttons = this.subElements.selector.querySelectorAll(".rangepicker__cell");
-        if (this.daySelection.stop != null) {
-          for (let prop of buttons) {
-            prop.classList.remove("rangepicker__selected-from");
-            prop.classList.remove("rangepicker__selected-between");
-            prop.classList.remove("rangepicker__selected-to");
-          }
-
-          evt.target.classList.add("rangepicker__selected-from");
-          this.daySelection.start = Date.parse(evt.target.dataset.value) - millisecondsToDay;
-          this.daySelection.stop = null;
-        }
-        else {
-          this.daySelection.stop = Date.parse(evt.target.dataset.value) - millisecondsToDay;
-          this.subElements.input.innerHTML = this.createInputBodyTimestampTemplate();
-          this.subElements.selector.innerHTML = this.createSelectorTemplate();
-          this.subElements.input.dispatchEvent(new MouseEvent("click", { bubles: true }));
-        }
-      }
-
-      if (evt.target.className.includes("rangepicker__selector-control-left")) {
-        this.date.from = new Date(this.date.from.setMonth(this.date.from.getMonth() - 1));
-        this.date.to = new Date(this.date.to.setMonth(this.date.to.getMonth() - 1));
-        this.subElements.input.innerHTML = this.createInputBodyTemplate();
-        this.changeSelectorTemplate();
-      }
-
-      if (evt.target.className.includes("rangepicker__selector-control-right")) {
-        this.date.to = new Date(this.date.to.setMonth(this.date.to.getMonth() + 1));
-        this.date.from = new Date(this.date.from.setMonth(this.date.from.getMonth() + 1));
-        this.subElements.input.innerHTML = this.createInputBodyTemplate();
-        this.changeSelectorTemplate();
-      }
-    });
-
+    if (evt.target.className.includes("rangepicker__selector-control-right")) {
+      this.date.to = new Date(this.date.to.setMonth(this.date.to.getMonth() + 1));
+      this.date.from = new Date(this.date.from.setMonth(this.date.from.getMonth() + 1));
+      this.subElements.input.innerHTML = this.createInputBodyTemplate();
+      this.changeSelectorTemplate();
+    }
   }
 
   ruDate(ISOdate) {
@@ -198,6 +206,8 @@ export default class RangePicker {
   }
 
   remove() {
+    this.subElements.input.removeEventListener("click", this.inputEventListener);
+    this.subElements.selector.removeEventListener("click", this.selectorEventListener);
     this.element.remove();
   }
 
