@@ -11,11 +11,11 @@ export default class RangePicker {
       stop: Date.parse(this.date.to)
     };
 
-    this.eventListeners();
+    this.createEventListeners();
 
   }
 
-  eventListeners() {
+  createEventListeners() {
     this.subElements.input.addEventListener("click", this.inputEventListener);
     this.subElements.selector.addEventListener("click", this.selectorEventListener);
   }
@@ -101,19 +101,19 @@ export default class RangePicker {
   createInputBodyTimestampTemplate() {
     return `
       <span data-element="from">${new Date(this.daySelection.start).toLocaleString("ru-RU",
-        {
-          day: 'numeric',
-          month: 'numeric',
-          year: 'numeric'
-        }
-      )}</span> -
+    {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    }
+  )}</span> -
       <span data-element="to">${ new Date(this.daySelection.stop).toLocaleString("ru-RU",
-        {
-          day: 'numeric',
-          month: 'numeric',
-          year: 'numeric'
-        }
-      )}</span>
+    {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    }
+  )}</span>
       `;
   }
 
@@ -206,12 +206,12 @@ export default class RangePicker {
   }
 
   remove() {
-    this.subElements.input.removeEventListener("click", this.inputEventListener);
-    this.subElements.selector.removeEventListener("click", this.selectorEventListener);
     this.element.remove();
   }
 
   destroy () {
+    this.subElements.input.removeEventListener("click", this.inputEventListener);
+    this.subElements.selector.removeEventListener("click", this.selectorEventListener);
     this.remove();
   }
 
