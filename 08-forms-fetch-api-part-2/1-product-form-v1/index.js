@@ -33,38 +33,45 @@ export default class ProductForm {
       }
     }
 
-    this.element.addEventListener("submit", async (evt) => {
-      evt.preventDefault();
-      this.form = new FormData(this.element.firstElementChild);
-      this.formToSend = {};
-
-      this.formToSend.id = this.productId;
-      this.formToSend.title = this.form.get("title");
-      this.formToSend.description = this.form.get("description");
-      this.formToSend.quantity = Number(this.form.get("quantity"));
-      this.formToSend.subcategory = this.form.get("subcategory");
-      this.formToSend.status = Number(this.form.get("status"));
-      this.formToSend.price = Number(this.form.get("price"));
-      this.formToSend.discount = Number(this.form.get("discount"));
-
-      this.formToSend.rating = 5;
-      this.formToSend.brand = "Lenovo";
-      this.formToSend.characteristics = [];
-      this.formToSend.images = [];
-
-      this.response = await fetchJson(
-        `${BACKEND_URL}/api/rest/products`,
-        {
-          method: 'POST',
-          body: JSON.stringify(this.formToSend)
-        }
-      );
-      this.result = await this.response.json(response);
-      this.save();
-    });
+    this.createEventListeners();
 
     return this.element;
   }
+
+  createEventListeners() {
+    this.element.addEventListener("submit", this.handleFormSubmit);
+  }
+
+  handleFormSubmit = async (evt) => {
+    evt.preventDefault();
+    this.form = new FormData(this.element.firstElementChild);
+    this.formToSend = {};
+
+    this.formToSend.id = this.productId;
+    this.formToSend.title = this.form.get("title");
+    this.formToSend.description = this.form.get("description");
+    this.formToSend.quantity = Number(this.form.get("quantity"));
+    this.formToSend.subcategory = this.form.get("subcategory");
+    this.formToSend.status = Number(this.form.get("status"));
+    this.formToSend.price = Number(this.form.get("price"));
+    this.formToSend.discount = Number(this.form.get("discount"));
+
+    this.formToSend.rating = 5;
+    this.formToSend.brand = "Lenovo";
+    this.formToSend.characteristics = [];
+    this.formToSend.images = [];
+
+    this.response = await fetchJson(
+      `${BACKEND_URL}/api/rest/products`,
+      {
+        method: 'POST',
+        body: JSON.stringify(this.formToSend)
+      }
+    );
+    this.result = await this.response.json(response);
+    this.save();
+  }
+
 
   save() {
     this.productId ?
@@ -164,6 +171,7 @@ export default class ProductForm {
   }
 
   destroy () {
+    this.element.removeEventListener("submit", this.handleFormSubmit);
     this.remove();
   }
 
