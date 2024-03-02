@@ -13,7 +13,7 @@ export default class SortableList {
   }
 
   createEventListeners() {
-    this.element.addEventListener("pointerdown", (evtClick) => {
+    this.userMouseDrag = (evtClick) => {
       this.clickedElement = evtClick.target.closest(".sortable-list__item");
       if (evtClick.target.hasAttribute("data-grab-handle")) {
         this.dragElement = this.clickedElement.cloneNode(true);
@@ -80,11 +80,13 @@ export default class SortableList {
         };
       }
 
-
       if (evtClick.target.hasAttribute("data-delete-handle")) {
         evtClick.target.closest(".sortable-list__item").remove();
       }
-    });
+    };
+
+
+    this.element.addEventListener("pointerdown", this.userMouseDrag);
 
   }
 
@@ -93,6 +95,7 @@ export default class SortableList {
   }
 
   destroy() {
+    this.element.removeEventListener("pointerdown", this.userMouseDrag);
     this.remove();
   }
 
